@@ -1,3 +1,5 @@
+from BayesianProbability import most_likely_words
+
 def compare(guess: str, solution: str): #returns a tuple of 5 integers representing the pattern of a guess given a solution. 2 = green 1 = yellow 0 = gray
     assert len(guess) == len(solution) == 5
     
@@ -77,3 +79,4 @@ def convert_patterns(patterns):
     for pattern in patterns:
         numberPatterns.append(pattern_tuple_to_int(pattern))
     return numberPatterns
+

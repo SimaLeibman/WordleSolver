@@ -108,3 +108,20 @@ def total_unique_patterns(pattern_freq_db):
     return len(all_patterns)
 
 print("Total unique patterns:", total_unique_patterns(pattern_freq_db))
+
+def count_times_word_is_contained(word, containment_pairs):
+    """
+    Return the number of times `word` appears as the contained
+    element in containment_pairs.
+    """
+
+    count = 0
+    for contained, _ in containment_pairs:
+        if contained == word:
+            count += 1
+
+    return count
+
+pairs = find_contained_pattern_pairs_fast(allowed_solutions, pattern_freq_db)
+
+print(count_times_word_is_contained("batch", pairs))
