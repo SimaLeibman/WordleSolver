@@ -8,7 +8,7 @@ from collections import defaultdict
 
 
 allowed_solutions = load_word_list("allowed_solutions.txt")
-allowed_guesses = load_word_list("allowed_guesses.txt")
+allowed_guesses = load_word_list("data/allowed_guesses.txt")
 
 
 with open("pattern_freq_db_updated1.pkl", "rb") as f:
