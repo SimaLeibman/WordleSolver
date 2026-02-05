@@ -1,7 +1,0 @@
-BayesianProbability
-DatabaseBuilder
-NaiveGuesser
-RandomBullshit
-SurpriseCalculator
-WordleNarrower
-WordleOptimizer
