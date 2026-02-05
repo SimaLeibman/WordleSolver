@@ -7,7 +7,7 @@ from collections import defaultdict
 
 
 
-allowed_solutions = load_word_list("allowed_solutions.txt")
+allowed_solutions = load_word_list("data/allowed_solutions.txt")
 allowed_guesses = load_word_list("data/allowed_guesses.txt")
 
 

@@ -24,7 +24,7 @@ def load_pattern_freq_db(filename="pattern_freq_db.pkl"):
     with open(filename, "rb") as f:
         return pickle.load(f)
     
-allowed_solutions = load_word_list("allowed_solutions.txt")
+allowed_solutions = load_word_list("data/allowed_solutions.txt")
 allowed_guesses = load_word_list("data/allowed_guesses.txt")
     
 db = build_pattern_freq_db(allowed_solutions, allowed_guesses)
