@@ -3,7 +3,6 @@ from NaiveGuesser import *
 from BayesianProbability import *
 from SurpriseCalculator import *
 import pickle
-
 import pandas as pd
 
 def convert_bars(lst: list[str]) -> list[tuple]:
@@ -20,115 +19,21 @@ with open("pattern_freq_db_updated1.pkl", "rb") as f:
     pattern_freq_db = pickle.load(f)
 
 experiments_df = pd.read_csv("data/experiments.csv")
-print(experiments_df.head())
+#print(experiments_df.head())
 
-experiments_df = experiments_df.groupby('ind')['patterns'].agg(list).reset_index(name='ll')
-print(experiments_df.head()['ll'])
+experiments_df = experiments_df.groupby('ind')['patterns'].\
+    agg(list).reset_index(name='ll')
+# print(experiments_df.head()['ll'])
 
 experiments_df['tuples'] = experiments_df['ll'].apply(convert_bars)
-print(experiments_df.head()['tuples'])
+# print(experiments_df.head()['tuples'])
 
-patterns_df = experiments_df['tuples'].iloc[6]
-print(patterns_df)
+tuple_patterns = experiments_df['tuples'].iloc[6]
+# print(tuple_patterns)
 
-
-
-
-
-
-
-
-
-
-
-
-patterns = [
-    (1,0,0,1,0), #tyler
-    (0,0,1,1,0),
-    (2,2,1,0,2),    
-    (0,1,0,0,2), #sima
-    (1,0,1,0,0),
-    (2,2,1,0,2),
-    (2,0,0,0,0),  #fare
-    (0,1,0,1,0),
-    (1,1,1,2,0),  
-    (0,0,0,1,0), #thinking  
-    (0,0,1,0,2),
-    (0,1,0,0,2),
-    (2,2,1,0,2),
-    (0,0,1,0,0), #jaiden #1
-    (0,1,1,0,0),
-    (1,0,0,2,2),
-    (0,0,2,2,2),
-    (0,1,2,2,2),
-    (0,0,1,0,0), #jaiden #2
-    (2,0,0,0,1),
-    (2,0,0,2,0),
-    (2,0,1,2,0),
-    (2,0,0,2,2),
-    (0,0,1,0,0), #yosef
-    (0,1,0,0,0),
-    (2,1,1,0,0),
-    (2,2,1,0,2),
-    (0,1,0,0,2), #sinclair
-    (0,1,0,0,2),
-    (0,0,1,0,2),
-    (0,1,0,0,2),
-    (1,0,1,1,0),
-    (0,1,1,0,0), #edog
-    (1,0,0,2,0),
-    (0,0,0,2,2),
-    (0,1,0,2,2),
-    (2,0,0,2,2),
-    (2,0,0,2,2),
-    (0,1,0,0,0), #jp
-    (0,0,1,0,0),
-    (2,0,0,2,2),
-    (0,0,1,0,0), #hopper
-    (1,1,0,0,0),
-    (1,0,0,0,0),
-    (0,0,2,2,2)
-
-
-    # (1,2,1,0,0), #
-    # (2,2,0,0,0),
-    # (2,2,0,0,0),
-    # (2,2,2,0,0),
-    # (1,0,1,0,0), #will #4
-    # (0,2,1,0,0),
-    # (0,2,2,2,2),
-    # (0,2,2,2,2),
-    # (0,2,2,2,2),
-    # (1,0,0,0,0), #jaiden
-    # (1,1,1,0,0),
-    # (0,0,1,1,2),
-    # (1,2,0,0,0),
-    # (0,0,0,0,0), #jaiden #2
-    # (0,1,1,2,0),
-    # (1,2,0,2,0),
-    # (0,2,2,2,2),
-    # (0,1,1,0,0), #jaiden #3
-    # (1,1,1,0,0),  
-    # (1,2,2,0,0),
-    # (0,2,2,1,0),
-    # (0,2,2,2,2)
-]
-
-#print(patterns_df)
-#print(patterns)
-for p in zip(sorted(patterns_df), sorted(patterns)):
-    print(p)
-print(set(patterns_df) - set(patterns))
-# print(set(patterns) - set(patterns_df))
-# print(f"len(patterns_df): {len(patterns_df)}")
-# print(f"len(patterns): {len(patterns)}")
-# print(f"len(set(patterns_df) - set(patterns)): {len(set(patterns_df) - set(patterns))}")
-# print(f"len(set(patterns) - set(patterns_df)): {len(set(patterns) - set(patterns_df))}")
-#exit()
-patterns = convert_patterns(patterns_df)
+patterns = convert_patterns(tuple_patterns)
 valid_words = filter_solutions_by_patterns(allowed_solutions, patterns, pattern_freq_db)
 valid_words = most_likely_words(patterns, valid_words, pattern_freq_db, len(valid_words))
-
 
 print(valid_words)
 print("Number of bayesian guesses: " + str(bayesian_number_of_guesses(patterns, valid_words, pattern_freq_db, "abbot")))
