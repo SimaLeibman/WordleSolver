@@ -2,9 +2,9 @@ from WordleNarrower import *
 from NaiveGuesser import *
 from BayesianProbability import *
 from SurpriseCalculator import *
+from patterns_example import patterns
 import pickle
 from collections import defaultdict
-
 
 
 allowed_solutions = load_word_list("data/allowed_solutions.txt")
@@ -15,79 +15,6 @@ with open("pattern_freq_db_updated1.pkl", "rb") as f:
     pattern_freq_db = pickle.load(f)
 
 
-
-patterns = [
-    (1,0,0,1,0), #tyler
-    (0,0,1,1,0),
-    (2,2,1,0,2),    
-    (0,1,0,0,2), #sima
-    (1,0,1,0,0),
-    (2,2,1,0,2),
-    (2,0,0,0,0),  #fare
-    (0,1,0,1,0),
-    (1,1,1,2,0),  
-    (0,0,0,1,0), #thinking  
-    (0,0,1,0,2),
-    (0,1,0,0,2),
-    (2,2,1,0,2),
-    (0,0,1,0,0), #jaiden #1
-    (0,1,1,0,0),
-    (1,0,0,2,2),
-    (0,0,2,2,2),
-    (0,1,2,2,2),
-    (0,0,1,0,0), #jaiden #2
-    (2,0,0,0,1),
-    (2,0,0,2,0),
-    (2,0,1,2,0),
-    (2,0,0,2,2),
-    (0,0,1,0,0), #yosef
-    (0,1,0,0,0),
-    (2,1,1,0,0),
-    (2,2,1,0,2),
-    (0,1,0,0,2), #sinclair
-    (0,1,0,0,2),
-    (0,0,1,0,2),
-    (0,1,0,0,2),
-    (1,0,1,1,0),
-    (0,1,1,0,0), #edog
-    (1,0,0,2,0),
-    (0,0,0,2,2),
-    (0,1,0,2,2),
-    (2,0,0,2,2),
-    (2,0,0,2,2),
-    (0,1,0,0,0), #jp
-    (0,0,1,0,0),
-    (2,0,0,2,2),
-    (0,0,1,0,0), #hopper
-    (1,1,0,0,0),
-    (1,0,0,0,0),
-    (0,0,2,2,2)
-
-
-
-    # (1,2,1,0,0), #
-    # (2,2,0,0,0),
-    # (2,2,0,0,0),
-    # (2,2,2,0,0),
-    # (1,0,1,0,0), #will #4
-    # (0,2,1,0,0),
-    # (0,2,2,2,2),
-    # (0,2,2,2,2),
-    # (0,2,2,2,2),
-    # (1,0,0,0,0), #jaiden
-    # (1,1,1,0,0),
-    # (0,0,1,1,2),
-    # (1,2,0,0,0),
-    # (0,0,0,0,0), #jaiden #2
-    # (0,1,1,2,0),
-    # (1,2,0,2,0),
-    # (0,2,2,2,2),
-    # (0,1,1,0,0), #jaiden #3
-    # (1,1,1,0,0),  
-    # (1,2,2,0,0),
-    # (0,2,2,1,0),
-    # (0,2,2,2,2)
-]
 patterns = convert_patterns(patterns)
 valid_words = filter_solutions_by_patterns(allowed_solutions, patterns, pattern_freq_db)
 valid_words = most_likely_words(patterns, valid_words, pattern_freq_db, len(valid_words))
