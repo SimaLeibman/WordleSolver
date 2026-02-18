@@ -11,9 +11,13 @@ help:
 	@echo "  run        Run run_input.py using .venv"
 	@echo "  run-input  Alias for run"
 	@echo "  run-pattern Run run_pattern.py using .venv"
+	@echo "  run-sima Run the original main using .venv"
 
 run run-input:
 	$(PYTHON) run_input.py
 
 run-pattern:
 	$(PYTHON) run_pattern.py
+
+run-sima:
+	$(PYTHON) main.py
