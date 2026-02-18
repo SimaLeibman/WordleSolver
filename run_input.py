@@ -28,7 +28,8 @@ experiments_df = experiments_df.groupby('ind')['patterns'].\
 experiments_df['tuples'] = experiments_df['ll'].apply(convert_bars)
 # print(experiments_df.head()['tuples'])
 
-tuple_patterns = experiments_df['tuples'].iloc[6]
+# 6 works
+tuple_patterns = experiments_df['tuples'].iloc[1]
 # print(tuple_patterns)
 
 patterns = convert_patterns(tuple_patterns)
