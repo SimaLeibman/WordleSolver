@@ -2,32 +2,18 @@ from WordleNarrower import *
 from NaiveGuesser import *
 from BayesianProbability import *
 from SurpriseCalculator import *
-import pickle
-import pandas as pd
+from input import load_data
 
-def convert_bars(lst: list[str]) -> list[tuple]:
-    res = []
-    for el in lst:
-        res += [tuple(list(map(int,list(x)))) 
-        for x in el.split('|')]
-    return res
-
-allowed_solutions = load_word_list("data/allowed_solutions.txt")
-allowed_guesses = load_word_list("data/allowed_guesses.txt")
-
-with open("db/pattern_freq_db_updated1.pkl", "rb") as f:
-    pattern_freq_db = pickle.load(f)
-
-experiments_df = pd.read_csv("data/experiments.csv")
-agg_df = experiments_df.groupby(['ind','secret'])[['patterns','solver']].agg(list).reset_index()
-agg_df['tuples'] = agg_df['patterns'].apply(convert_bars)
+allowed_solutions, allowed_guesses, pattern_freq_db, agg_df = load_data()
 
 # Run all experiments
 for ind in range(len(agg_df)):
+
     tuple_patterns = agg_df['tuples'].iloc[ind]
     answer = agg_df['secret'].iloc[ind]
     experiment_index = agg_df['ind'].iloc[ind]
-    print(f"\n==> Running experiment #{experiment_index}, {answer = }\n")
+    
+    print(f"\n==> Running experiment #{experiment_index}, answer = {answer}\n")
 
     patterns = convert_patterns(tuple_patterns)
     valid_words = filter_solutions_by_patterns(allowed_solutions, patterns, pattern_freq_db)
