@@ -15,12 +15,12 @@ def build_pattern_freq_db(solutions, guesses):
     return db
 
 
-def save_pattern_freq_db(db, filename="pattern_freq_db.pkl"):
+def save_pattern_freq_db(db, filename="db/pattern_freq_db.pkl"):
     with open(filename, "wb") as f:
         pickle.dump(db, f)
 
 
-def load_pattern_freq_db(filename="pattern_freq_db.pkl"):
+def load_pattern_freq_db(filename="db/pattern_freq_db.pkl"):
     with open(filename, "rb") as f:
         return pickle.load(f)
     

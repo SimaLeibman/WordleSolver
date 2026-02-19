@@ -15,33 +15,36 @@ def convert_bars(lst: list[str]) -> list[tuple]:
 allowed_solutions = load_word_list("data/allowed_solutions.txt")
 allowed_guesses = load_word_list("data/allowed_guesses.txt")
 
-with open("pattern_freq_db_updated1.pkl", "rb") as f:
+with open("db/pattern_freq_db_updated1.pkl", "rb") as f:
     pattern_freq_db = pickle.load(f)
 
 experiments_df = pd.read_csv("data/experiments.csv")
-#print(experiments_df.head())
+agg_df = experiments_df.groupby(['ind','secret'])[['patterns','solver']].agg(list).reset_index()
+agg_df['tuples'] = agg_df['patterns'].apply(convert_bars)
 
-experiments_df = experiments_df.groupby('ind')['patterns'].\
-    agg(list).reset_index(name='ll')
-# print(experiments_df.head()['ll'])
+# Run all experiments
+for ind in range(len(agg_df)):
+    tuple_patterns = agg_df['tuples'].iloc[ind]
+    answer = agg_df['secret'].iloc[ind]
+    experiment_index = agg_df['ind'].iloc[ind]
+    print(f"\n==> Running experiment #{experiment_index}, {answer = }\n")
 
-experiments_df['tuples'] = experiments_df['ll'].apply(convert_bars)
-# print(experiments_df.head()['tuples'])
+    patterns = convert_patterns(tuple_patterns)
+    valid_words = filter_solutions_by_patterns(allowed_solutions, patterns, pattern_freq_db)
+    valid_words = most_likely_words(patterns, valid_words, pattern_freq_db, len(valid_words))
 
-# 6 works
-tuple_patterns = experiments_df['tuples'].iloc[1]
-# print(tuple_patterns)
-
-patterns = convert_patterns(tuple_patterns)
-valid_words = filter_solutions_by_patterns(allowed_solutions, patterns, pattern_freq_db)
-valid_words = most_likely_words(patterns, valid_words, pattern_freq_db, len(valid_words))
-
-print(valid_words)
-print("Number of bayesian guesses: " + str(bayesian_number_of_guesses(patterns, valid_words, pattern_freq_db, "abbot")))
-print("Number of best_guess guesses: " + str(best_guess_number_of_guesses(valid_words, allowed_guesses, "abbot")))
-print("Number of hybrid guesses: " + str(hybrid_model_number_of_guesses(patterns, valid_words, pattern_freq_db, allowed_guesses, "abbot")))
-print("Bayesian first guess reduction: " + str((1-len(filter_possible_words(valid_words, valid_words[0], compare(valid_words[0], "abbot")))/len(valid_words))*100) + "%")
-print("Best guess first guess reduction: " + str((1-len(filter_possible_words(valid_words, best_guess(valid_words, allowed_guesses)[0], compare(best_guess(valid_words, allowed_guesses)[0], "abbot")))/len(valid_words))*100) + "%")
+    print(valid_words)
+    print("Number of bayesian guesses: " + str(bayesian_number_of_guesses(patterns, valid_words, pattern_freq_db, answer)))
+    print("Number of best_guess guesses: " + \
+        str(best_guess_number_of_guesses(valid_words, allowed_guesses, answer)))
+    print("Number of hybrid guesses: " + \
+        str(hybrid_model_number_of_guesses(patterns, valid_words, pattern_freq_db, allowed_guesses, answer)))
+    print("Bayesian first guess reduction: " + \
+        str((1-len(filter_possible_words(valid_words, valid_words[0], \
+            compare(valid_words[0], answer)))/len(valid_words))*100) + "%")
+    print("Best guess first guess reduction: " + \
+        str((1-len(filter_possible_words(valid_words, best_guess(valid_words, allowed_guesses)[0], \
+            compare(best_guess(valid_words, allowed_guesses)[0], answer)))/len(valid_words))*100) + "%")
 
 # next_guess, score = best_guess(valid_words, allowed_guesses)
 # print("recommended guess:", next_guess)
