@@ -1,6 +1,6 @@
 def get_patterns():
+    # Sample 6
     answer = "abbot"
-
     patterns = [
         (1,0,0,1,0), #tyler
         (0,0,1,1,0),
@@ -74,9 +74,10 @@ def get_patterns():
         # (0,2,2,2,2)
     ]
 
-    # 1 sample
+    # Sample 1
     answer = "conch"
-    patterns = [(0,1,0,1,0), #bleop
+    patterns = [
+        (0,1,0,1,0), #bleop
         (2,0,1,0,0),
         (2,0,0,1,0), #kaddical    
         (2,1,0,0,1), 
@@ -113,7 +114,8 @@ def get_patterns():
         (2,0,0,1,0), #randbob #2
         (2,0,0,0,1),
         (2,2,2,0,0),
-        (0,0,0,0,2)]
+        (0,0,0,0,2)
+    ]
 
     return answer, patterns
 
