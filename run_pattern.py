@@ -10,7 +10,7 @@ allowed_solutions = load_word_list("data/allowed_solutions.txt")
 allowed_guesses = load_word_list("data/allowed_guesses.txt")
 
 
-with open("pattern_freq_db_updated1.pkl", "rb") as f:
+with open("db/pattern_freq_db_updated1.pkl", "rb") as f:
     pattern_freq_db = pickle.load(f)
 
 answer, patterns = get_patterns()
