@@ -1,32 +1,38 @@
-.PHONY: help run run-input run-pattern install
-
-VENV := .venv
+VENV   := .venv
 PYTHON := $(VENV)/bin/python
-PIP := $(VENV)/bin/pip
+PIP    := $(VENV)/bin/pip
 
-help:
-	@echo "Usage: make [target]"
-	@echo ""
-	@echo "Targets:"
-	@echo "  help       Show this help (default)"
-	@echo "  "
-	@echo "  install    ==> Run this first! Configure Python (.venv)"
-	@echo "  "
-	@echo "  run        Run run_input.py using .venv"
-	@echo "  run-input  Alias for run"
-	@echo "  run-pattern Run run_pattern.py using .venv"
-	@echo "  run-sima Run the original main using .venv"
+.DEFAULT_GOAL := help
+.PHONY: help venv install run run-input run-pattern run-sima test clean
 
-install:
-	python3 -m venv $(VENV)
+help: ## Show this help
+	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n\nTargets:\n"} \
+		/^[a-zA-Z0-9_-]+:.*##/ { printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+
+# Sentinel file: only re-runs when requirements.txt changes or venv is missing
+$(VENV)/.installed: requirements.txt
+	@test -d $(VENV) || python3 -m venv $(VENV)
 	$(PIP) install --upgrade pip
-	@if [ -f requirements.txt ]; then $(PIP) install -r requirements.txt; fi
+	$(PIP) install -r requirements.txt
+	@touch $@
 
-run run-input:
+venv: $(VENV)/.installed ## Create/update the virtualenv
+
+install: venv ## Alias for venv
+
+run: run-input ## Alias for run-input
+
+run-input: venv ## Run run_input.py
 	$(PYTHON) run_input.py
 
-run-pattern:
+run-pattern: venv ## Run run_pattern.py
 	$(PYTHON) run_pattern.py
 
-run-sima:
+run-sima: venv ## Run main.py
 	$(PYTHON) main.py
+
+test: venv ## Run the test suite
+	$(PYTHON) -m pytest
+
+clean: ## Remove the virtualenv
+	rm -rf $(VENV)
