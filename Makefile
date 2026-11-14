@@ -18,7 +18,7 @@ $(VENV)/.installed: requirements.txt
 
 venv: $(VENV)/.installed ## Create/update the virtualenv
 
-install: venv ## Alias for venv
+install: venv ## Currently just runs venv, should be used to run any installation scripts
 
 run: run-input ## Alias for run-input
 
