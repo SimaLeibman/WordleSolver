@@ -12,7 +12,7 @@ for ind in range(len(agg_df)):
     tuple_patterns = agg_df['tuples'].iloc[ind]
     answer = agg_df['secret'].iloc[ind]
     experiment_index = agg_df['ind'].iloc[ind]
-    
+
     print(f"\n==> Running experiment #{experiment_index}, answer = {answer}\n")
 
     patterns = convert_patterns(tuple_patterns)
